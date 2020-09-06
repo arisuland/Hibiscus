@@ -1,15 +1,13 @@
 {
   "name": "@monori/frontend",
-  "description": "👻💻 Frontend portion for Monori, made with Vue.js",
   "version": "1.0.0",
   "private": true,
+  "description": "👻💻 Frontend portion for Monori, made with Vue.js",
   "author": "Chris \"August\" Hernandez <august@augu.dev>",
-  "repository": "https://github.com/monori-site/frontend",
-  "license": "MIT",
   "scripts": {
-    "test:e2e": "yarn vue-cli-service test:e2e",
     "serve": "yarn vue-cli-service serve",
     "build": "yarn vue-cli-service build",
+    "test:e2e": "yarn vue-cli-service test:e2e",
     "lint": "yarn vue-cli-service lint"
   },
   "dependencies": {
@@ -39,6 +37,9 @@
     "sass": "1.26.10",
     "sass-loader": "10.0.2",
     "typescript": "4.0.2",
+    "vue-cli-plugin-tailwind": "~1.4.2",
     "vue-template-compiler": "2.6.12"
-  }
+  },
+  "license": "MIT",
+  "repository": "https://github.com/monori-site/frontend"
 }
