@@ -1,7 +1,10 @@
 module.exports = {
-  plugins: {
-    tailwindcss: {},
-    'vue-cli-plugin-tailwind/purgecss': {},
-    autoprefixer: {}
-  }
+  plugins: [
+    require('@csstools/postcss-sass')({
+      includePaths: ['./node_modules']
+    }),
+    require('postcss-import'),
+    require('tailwindcss'),
+    require('autoprefixer')
+  ]
 };

@@ -2,44 +2,52 @@
   "name": "@monori/frontend",
   "version": "1.0.0",
   "private": true,
-  "description": "👻💻 Frontend portion for Monori, made with Vue.js",
+  "description": "👻💻 Frontend portion for Monori, made with React using TailwindCSS",
   "author": "Chris \"August\" Hernandez <august@augu.dev>",
+  "license": "MIT",
+  "repository": "https://github.com/monori-site/frontend",
   "scripts": {
-    "serve": "yarn vue-cli-service serve",
-    "build": "yarn vue-cli-service build",
-    "test:e2e": "yarn vue-cli-service test:e2e",
-    "lint": "yarn vue-cli-service lint"
+    "build:css:watch": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose --watch && yarn cleanup",
+    "build:css": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose && yarn cleanup",
+    "cleanup": "rm -fr node_modules/@types/**/node_modules && rm src/styles/**.css.map",
+    "start": "yarn react-scripts start",
+    "build": "yarn react-scripts build",
+    "e2e": "cypress open"
   },
   "dependencies": {
-    "core-js": "3.6.5",
-    "register-service-worker": "1.7.1",
-    "tailwindcss": "^1.7.6",
-    "vue": "2.6.12",
-    "vue-class-component": "7.2.5",
-    "vue-property-decorator": "9.0.0",
-    "vue-router": "3.4.3",
-    "vuex": "3.5.1"
+    "@augu/orchid": "1.6.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "3.4.3",
+    "tailwindcss": "1.8.4"
   },
   "devDependencies": {
     "@augu/eslint-config": "1.7.3",
+    "@csstools/postcss-sass": "4.0.0",
+    "@types/node": "14.6.4",
+    "@types/react": "16.9.49",
+    "@types/react-dom": "16.9.8",
+    "@types/react-router-dom": "5.1.5",
     "@typescript-eslint/eslint-plugin": "4.0.1",
     "@typescript-eslint/parser": "4.0.1",
-    "@vue/cli-plugin-babel": "4.5.4",
-    "@vue/cli-plugin-e2e-cypress": "4.5.4",
-    "@vue/cli-plugin-eslint": "4.5.4",
-    "@vue/cli-plugin-pwa": "4.5.4",
-    "@vue/cli-plugin-router": "4.5.4",
-    "@vue/cli-plugin-typescript": "4.5.4",
-    "@vue/cli-plugin-vuex": "4.5.4",
-    "@vue/cli-service": "4.5.4",
+    "autoprefixer": "9.8.6",
     "eslint": "7.8.1",
-    "eslint-plugin-vue": "6.2.2",
-    "sass": "1.26.10",
-    "sass-loader": "10.0.2",
-    "typescript": "4.0.2",
-    "vue-cli-plugin-tailwind": "~1.4.2",
-    "vue-template-compiler": "2.6.12"
+    "postcss": "7.0.32",
+    "postcss-cli": "7.1.2",
+    "postcss-import": "12.0.1",
+    "typescript": "4.0.2"
   },
-  "license": "MIT",
-  "repository": "https://github.com/monori-site/frontend"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

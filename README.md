@@ -1,5 +1,5 @@
 # @monori/frontend
-> :ghost::computer: **| Frontend portion of Monori, made with Vue.js with TailwindCSS**
+> :ghost::computer: **| Frontend portion for Monori, made with React using TailwindCSS**
 
 ## Installation
 :sparkles: ***coming soon?...*** :sparkles:
