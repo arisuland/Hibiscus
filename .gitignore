@@ -1,5 +1,6 @@
-src/styles/*.css
+src/styles/*.css.map
 cypress/screenshots/
+src/styles/*.css
 cypress/videos/
 node_modules/
 build/
