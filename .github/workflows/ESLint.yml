@@ -1,4 +1,4 @@
-name: Pull Request CI
+name: ESLint
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ on:
       # We ignore node modules, the build that TypeScript creates and the root directory
       # because it's mostly modifying the source code, not really these folder/files
       - 'node_modules/**'
-      #- '.gitignore'
+      - '.gitignore'
       - 'LICENSE'
       - 'README.md'
       - 'renovate.json'
