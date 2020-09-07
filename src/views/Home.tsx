@@ -26,7 +26,7 @@ import React from 'react';
 @Title('test')
 class Home extends React.Component {
   render() {
-    return <h1>Sup!</h1>;
+    return <h1>ea sports</h1>;
   }
 }
 

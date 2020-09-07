@@ -1,0 +1,37 @@
+name: Pull Request CI
+on:
+  pull_request:
+    branches:
+      - master
+      - indev
+      - 'side/**'
+      - 'feature/**'
+    paths-ignore:
+      # We ignore node modules, the build that TypeScript creates and the root directory
+      # because it's mostly modifying the source code, not really these folder/files
+      - 'node_modules/**'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+      - 'renovate.json'
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 13.x, 14.x]
+    steps:
+      - name: Setup repository in local
+        uses: actions/checkout@v1
+      - name: Use Node.js v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Installs global dependencies
+        run: npm i -g eslint cypress postcss-cli concurrently react-scripts
+      - name: Installs local dependencies
+        run: npm ci
+      - name: Lints the repository
+        run: eslint src --ext .ts,.tsx --fix --ignore-path .gitignore
+      - name: Runs End to End testing
+        run: postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose --watch && rm -fr src/styles/**/*.css.map && concurrently "react-scripts start" "cypress run"

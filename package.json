@@ -7,12 +7,13 @@
   "license": "MIT",
   "repository": "https://github.com/monori-site/frontend",
   "scripts": {
-    "build:css:watch": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose --watch && yarn cleanup",
-    "build:css": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose && yarn cleanup",
-    "cleanup": "rm -fr node_modules/@types/**/node_modules && rm src/styles/**.css.map",
-    "start": "yarn react-scripts start",
-    "build": "yarn react-scripts build",
-    "e2e": "yarn cypress run"
+    "build:css:watch": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose --watch",
+    "build:css": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose",
+    "prepare": "rm -fr node_modules/@types/**/node_modules",
+    "start": "yarn build:css && yarn react-scripts start",
+    "build": "yarn build:css && yarn react-scripts build",
+    "lint": "eslint src --ext .ts,.tsx --fix --ignore-path .gitignore",
+    "e2e": "yarn concurrently \"yarn start\" \"cypress run\" --success first --kill-others"
   },
   "dependencies": {
     "@augu/orchid": "1.6.1",
@@ -32,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "4.0.1",
     "@typescript-eslint/parser": "4.0.1",
     "autoprefixer": "9.8.6",
+    "concurrently": "5.3.0",
     "cypress": "5.1.0",
     "eslint": "7.8.1",
     "postcss": "7.0.32",

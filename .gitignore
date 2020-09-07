@@ -1,4 +1,4 @@
-src/styles/style.css
+src/styles/*.css
 cypress/screenshots/
 cypress/videos/
 node_modules/
