@@ -4,11 +4,7 @@ src/styles/*.css
 cypress/videos/
 node_modules/
 build/
-.env
 
 package-*.json
 *.lock
 *.log
-
-uwu/
-fuck/
