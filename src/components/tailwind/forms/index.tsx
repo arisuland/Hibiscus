@@ -20,26 +20,5 @@
  * SOFTWARE.
  */
 
-import { Button, GroupedButton } from '../components/tailwind';
-import Title from '../decorators/Title';
-import React from 'react';
-
-@Title('test')
-class Home extends React.Component {
-  render() {
-    return <div>
-      <h1>Normal button!</h1>
-      <br />
-      <Button content='My Button!' background={['blue', 500]} borderHover={['blue', 700]} text='white' bold rounded />
-      <br />
-      <h2>Grouped Buttons</h2>
-      <br />
-      <GroupedButton>
-        <Button content='My Button!' background={['blue', 500]} borderHover={['blue', 700]} text='white' bold rounded />
-        <Button content='My Button!' background={['blue', 500]} borderHover={['blue', 700]} text='white' bold rounded />
-      </GroupedButton>
-    </div>;
-  }
-}
-
-export default React.memo(Home);
+export { default as FormPrompt } from './FormPrompt';
+export { default as FormTitle } from './FormTitle';
