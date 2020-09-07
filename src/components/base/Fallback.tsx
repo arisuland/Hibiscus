@@ -20,15 +20,14 @@
  * SOFTWARE.
  */
 
-import Container from '../components/tailwind/Container';
-import Title from '../decorators/Title';
+import Title from '../../decorators/Title';
 import React from 'react';
 
-@Title('test')
-class Home extends React.Component {
+@Title('Monori | Fallback Error')
+class FallbackComponent extends React.Component {
   render() {
-    return <Container size='lg' center={true} padding={['horizontal', 5]}><h1>Hello!</h1></Container>;
+    return <div>{/* todo: do shit here lol */}</div>;
   }
 }
 
-export default React.memo(Home);
+export default React.memo(FallbackComponent);

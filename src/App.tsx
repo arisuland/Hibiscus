@@ -21,6 +21,7 @@
  */
 
 import { BrowserRouter, Route } from 'react-router-dom';
+import Fallback from './components/base/Fallback';
 //import Navbar from './components/core/Navbar';
 //import Footer from './components/core/Footer';
 import React from 'react';
@@ -31,7 +32,7 @@ const Home = React.lazy(() => import('./views/Home'));
 class AppComponent extends React.Component {
   render() {
     return (
-      <React.Suspense fallback={(props: any) => <h1>Gay!</h1>}>
+      <React.Suspense fallback={<Fallback />}>
         <BrowserRouter>
           <Route path={'/'} component={Home} />
         </BrowserRouter>
