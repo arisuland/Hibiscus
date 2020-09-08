@@ -26,6 +26,8 @@ const PaddingTypes = ['horizontal', 'vertical'];
 const Sizes = ['sm', 'md', 'lg', 'xl'];
 
 interface ContainerProps {
+  className?: string;
+
   /**
    * If we should include padding in the container
    */
@@ -76,10 +78,11 @@ class ContainerComponent extends React.Component<TailwindContainerProps> {
       return name;
     };
 
-    const classes = [getNamingScheme('container')];
+    const classes = [getNamingScheme('container'), 'section-mod', 'p-8', 'mt-8', 'mb-8'];
+    if (this.props.className) classes.push(this.props.className);
     if (this.props.center) classes.push(getNamingScheme('mx-auto'));
     if (this.props.padding) {
-      const padType = this.props.padding[0] === 'horizontal' ? 'px' : 'p';
+      const padType = this.props.padding[0] === 'horizontal' ? 'px' : 'py';
       const times = this.props.padding[1];
 
       classes.push(getNamingScheme(`${padType}-${times}`));

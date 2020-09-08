@@ -22,8 +22,8 @@
 
 import { BrowserRouter, Route } from 'react-router-dom';
 import Fallback from './components/base/Fallback';
-//import Navbar from './components/core/Navbar';
-//import Footer from './components/core/Footer';
+import Navbar from './components/base/Navbar';
+import Footer from './components/base/Footer';
 import React from 'react';
 
 // lazy load view pages
@@ -34,7 +34,9 @@ class AppComponent extends React.Component {
     return (
       <React.Suspense fallback={<Fallback />}>
         <BrowserRouter>
+          <Navbar />
           <Route path={'/'} component={Home} />
+          <Footer />
         </BrowserRouter>
       </React.Suspense>
     );

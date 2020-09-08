@@ -20,5 +20,38 @@
  * SOFTWARE.
  */
 
-export { default as GroupedButton } from './GroupedButton';
-export { default as Button } from './Button';
+import { Link } from 'react-router-dom';
+import React from 'react';
+
+interface FooterState {
+  date: Date;
+}
+
+class FooterComponent extends React.Component<{}, FooterState> { // eslint-disable-line @typescript-eslint/ban-types
+  constructor(props: any) {
+    super(props);
+
+    this.state = { date: new Date() };
+  }
+
+  get timestamp() {
+    const date = this.state.date;
+    return date.getFullYear() === 2020 ? '2020' : `2020-${date.getFullYear()}`;
+  }
+
+  render() {
+    // You cannot remove the copyright text or you will be asked to
+    // not use Monori ever again.
+    return <div className='mx-auto mt-20 mb-3'>
+      <p className='text-center text-white'>
+        Copyright &copy; {this.timestamp} | Made by <a href='https://augu.dev'>August (Chris)</a>
+      </p>
+
+      <p className='text-center text-white'>
+        <Link to='/privacy'>Privacy Policy</Link> and <Link to='/terms'>Terms of Service</Link>
+      </p>
+    </div>;
+  }
+}
+
+export default React.memo(FooterComponent);

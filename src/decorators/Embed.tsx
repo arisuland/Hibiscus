@@ -59,7 +59,7 @@ export default function Embed<V = any>(getOptions: ((props: V) => EmbedOptions) 
         },
         {
           tag: 'meta[property="og:url"]',
-          value: options.url === '/' ? process.env.PUBLIC_URL : `${process.env.PUBLIC_URL}${options.url}`
+          value: options.url
         }
       ];
 

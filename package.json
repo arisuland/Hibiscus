@@ -17,6 +17,10 @@
   },
   "dependencies": {
     "@augu/orchid": "1.6.1",
+    "@fortawesome/fontawesome-svg-core": "1.2.30",
+    "@fortawesome/free-brands-svg-icons": "5.14.0",
+    "@fortawesome/free-solid-svg-icons": "5.14.0",
+    "@fortawesome/react-fontawesome": "0.1.11",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "^7.2.1",

@@ -20,36 +20,20 @@
  * SOFTWARE.
  */
 
-import { Container, Button } from 'components/tailwind';
-import { Title, connect } from 'decorators';
-import type { State } from 'store/types';
+import { Title, Embed } from 'decorators';
+import { Container } from 'components/tailwind';
 import React from 'react';
 
-@connect<State>((state) => ({
-  isLoggedIn: state.isLoggedIn,
-  user: state.user
-}), {
-  add: () => {
-    return {
-      type: 'login'
-    };
-  }
+@Title('Monori | Homepage')
+@Embed({
+  title: 'Monori | Homepage',
+  description: 'Simple and open-source translation site for everyone to use, for free.',
+  url: 'https://i18n.augu.dev'
 })
-@Title('test')
-class Home extends React.Component<State & { add(): void }> {
-  onClick(event: React.MouseEvent<HTMLButtonElement, React.MouseEvent>) {
-    console.log('clicked owo');
-    event.preventDefault();
-
-    console.log(this.props); // console-log it
-    this.props.add();
-  }
-
+class Home extends React.Component {
   render() {
     return <Container>
-      <h1 className='text-black'>Create new state</h1>
-      <p className='text-blue-300'>Current User: {this.props.user ? `@${this.props.user.username}` : 'unknown'}</p>
-      <Button content='Create!' onClick={(event) => this.onClick(event as any)}></Button>
+      <p className='text-pink-400'>Hello, world!</p>
     </Container>;
   }
 }
