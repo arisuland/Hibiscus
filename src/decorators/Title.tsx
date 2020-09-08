@@ -28,7 +28,7 @@ import React from 'react';
  * @returns A factory function to properly add the document title
  */
 export default function Title<V = any>(title: string | ((props: V) => string)) {
-  return (WrappedComponent: typeof React.Component) => {
+  return (WrappedComponent: typeof React.Component): any => {
     return (class DummyTitleComponent extends React.Component<V, {}, {}> { // eslint-disable-line @typescript-eslint/ban-types
       constructor(props: V) {
         super(props);

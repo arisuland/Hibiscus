@@ -39,7 +39,7 @@ interface EmbedUpdate {
  * @param getOptions Function to get the options by it's properties
  */
 export default function Embed<V = any>(getOptions: ((props: V) => EmbedOptions) | EmbedOptions) {
-  return (WrappedComponent: typeof React.Component) => (class DummyEmbedComponent extends React.Component<V> {
+  return (WrappedComponent: typeof React.Component): any => (class DummyEmbedComponent extends React.Component<V> {
     constructor(props: V) {
       super(props);
 

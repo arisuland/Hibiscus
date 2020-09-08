@@ -20,20 +20,27 @@
  * SOFTWARE.
  */
 
-import { create as createStore } from './store';
-import { Provider } from 'react-redux';
-import * as worker from './serviceWorker';
-import React from 'react';
-import DOM from 'react-dom';
-import App from './App';
+import { createStore } from 'redux';
+import StateLoader from './loaders/StateLoader';
+import reducer from './actions';
 
-import './styles/styles.css';
+/**
+ * Creates a new Redux store
+ */
+export function create() {
+  const loader = new StateLoader();
+  const store = createStore(reducer, loader.load());
 
-const style = process.env.NODE_ENV === 'production' ? DOM.hydrate : DOM.render;
-const store = createStore();
+  store.subscribe(() => {
+    const state = store.getState();
+    if (state === undefined) { // If it's undefined, let's not do anything & remove the local storage part
+      if (localStorage.getItem('monori.state') !== null) localStorage.removeItem('monori.state');
+      return;
+    } 
 
-style(<Provider store={store}>
-  <App />
-</Provider>, document.getElementById('react-root'));
+    loader.save(state);
+    console.log(state); // lets console log it so we know what's being injected
+  });
 
-worker.register();
+  return store;
+}

@@ -20,20 +20,6 @@
  * SOFTWARE.
  */
 
-import { create as createStore } from './store';
-import { Provider } from 'react-redux';
-import * as worker from './serviceWorker';
-import React from 'react';
-import DOM from 'react-dom';
-import App from './App';
-
-import './styles/styles.css';
-
-const style = process.env.NODE_ENV === 'production' ? DOM.hydrate : DOM.render;
-const store = createStore();
-
-style(<Provider store={store}>
-  <App />
-</Provider>, document.getElementById('react-root'));
-
-worker.register();
+export { default as connect } from './Connect';
+export { default as Embed } from './Embed';
+export { default as Title } from './Title';

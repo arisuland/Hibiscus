@@ -29,6 +29,11 @@ interface ButtonProps {
   borderHover?: [string, number];
 
   /**
+   * Received when the button is clicked, it'll perform this action
+   */
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+
+  /**
    * Background color
    */
   background?: [string, number];
@@ -100,7 +105,7 @@ class ButtonComponent extends React.Component<ButtonProps> {
     if (this.props.text) classes.push(`text-${this.props.text}`);
     if (this.props.bold) classes.push('font-bold');
 
-    return <button className={classes.join(' ')}>
+    return <button className={classes.join(' ')} onClick={this.props.onClick}>
       {this.props.content}
     </button>;
   }

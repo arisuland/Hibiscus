@@ -20,20 +20,23 @@
  * SOFTWARE.
  */
 
-import { create as createStore } from './store';
-import { Provider } from 'react-redux';
-import * as worker from './serviceWorker';
-import React from 'react';
-import DOM from 'react-dom';
-import App from './App';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect as connectStore } from 'react-redux';
 
-import './styles/styles.css';
+/**
+ * Decorator to connect the Redux store to a class-component
+ * @param mapStateToProps Maps the current state to the properties list
+ * @param actions Any list of actions to populate this [React.Component]
+ * @credit [Evan Turner](https://github.com/evturn/redux-connect-decorator)
+ */
+export default function connect<TState = {}, TProps = {}>( // eslint-disable-line @typescript-eslint/ban-types
+  mapStateToProps: (state: TState, props?: TProps) => any,
+  actions?: any
+): ClassDecorator {
+  return (target: any) => {
+    const provide = (dispatch: Dispatch) => bindActionCreators(actions!, dispatch);
+    const matching = !actions ? actions : provide;
 
-const style = process.env.NODE_ENV === 'production' ? DOM.hydrate : DOM.render;
-const store = createStore();
-
-style(<Provider store={store}>
-  <App />
-</Provider>, document.getElementById('react-root'));
-
-worker.register();
+    return connectStore(mapStateToProps, matching)(target);
+  };
+}

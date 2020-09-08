@@ -20,20 +20,48 @@
  * SOFTWARE.
  */
 
-import { create as createStore } from './store';
-import { Provider } from 'react-redux';
-import * as worker from './serviceWorker';
-import React from 'react';
-import DOM from 'react-dom';
-import App from './App';
+import type { State } from 'store/types';
 
-import './styles/styles.css';
+/**
+ * Class to create a [StateLoader], to handle persisent data from localStorage
+ */
+export default class StateLoader {
+  private state!: State;
 
-const style = process.env.NODE_ENV === 'production' ? DOM.hydrate : DOM.render;
-const store = createStore();
+  /**
+   * Initialises the state
+   * @returns A state instance to populate [StateLoader.state]
+   */
+  load() {
+    if (!this.state) {
+      try {
+        const cache = localStorage.getItem('monori.state');
+        const state = cache === null ? this._init() : JSON.parse<State>(cache);
 
-style(<Provider store={store}>
-  <App />
-</Provider>, document.getElementById('react-root'));
+        this.state = state;
+        return state;
+      } catch {
+        return this._init();
+      }
+    } else {
+      return this.state;
+    }
+  }
 
-worker.register();
+  /**
+   * Saves the state to localStorage
+   */
+  save(state: State) {
+    localStorage.setItem('monori.state', JSON.stringify<State>(state));
+  }
+
+  /**
+   * Initialises a new instance of `this.state`
+   */
+  private _init(): State {
+    return {
+      isLoggedIn: false,
+      user: null
+    };
+  }
+}

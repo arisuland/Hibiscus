@@ -20,25 +20,37 @@
  * SOFTWARE.
  */
 
-import { Button, GroupedButton } from '../components/tailwind';
-import Title from '../decorators/Title';
+import { Container, Button } from '../components/tailwind';
+import { Title, connect } from '../decorators';
+import type { State } from '../store/types';
 import React from 'react';
 
+@connect<State>((state) => ({
+  isLoggedIn: state.isLoggedIn,
+  user: state.user
+}), {
+  add: () => {
+    return {
+      type: 'login'
+    };
+  }
+})
 @Title('test')
-class Home extends React.Component {
+class Home extends React.Component<State & { add(): void }> {
+  onClick(event: React.MouseEvent<HTMLButtonElement, React.MouseEvent>) {
+    console.log('clicked owo');
+    event.preventDefault();
+
+    console.log(this.props); // console-log it
+    this.props.add();
+  }
+
   render() {
-    return <div>
-      <h1>Normal button!</h1>
-      <br />
-      <Button content='My Button!' background={['blue', 500]} borderHover={['blue', 700]} text='white' bold rounded />
-      <br />
-      <h2>Grouped Buttons</h2>
-      <br />
-      <GroupedButton>
-        <Button content='My Button!' background={['blue', 500]} borderHover={['blue', 700]} text='white' bold rounded />
-        <Button content='My Button!' background={['blue', 500]} borderHover={['blue', 700]} text='white' bold rounded />
-      </GroupedButton>
-    </div>;
+    return <Container>
+      <h1 className='text-black'>Create new state</h1>
+      <p className='text-blue-300'>Current User: {this.props.user ? `@${this.props.user.username}` : 'unknown'}</p>
+      <Button content='Create!' onClick={(event) => this.onClick(event as any)}></Button>
+    </Container>;
   }
 }
 

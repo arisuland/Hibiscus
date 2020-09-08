@@ -8,7 +8,7 @@
   "repository": "https://github.com/monori-site/frontend",
   "scripts": {
     "build:css:watch": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose --watch",
-    "build:css": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose",
+    "build:css": "yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose && rm src/styles/**.css.map",
     "prepare": "rm -fr node_modules/@types/**/node_modules",
     "start": "yarn lint && yarn build:css && yarn react-scripts start",
     "build": "yarn lint && yarn build:css && yarn react-scripts build",
@@ -19,8 +19,10 @@
     "@augu/orchid": "1.6.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-redux": "^7.2.1",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.3",
+    "redux": "4.0.5",
     "tailwindcss": "1.8.4"
   },
   "devDependencies": {
@@ -29,6 +31,7 @@
     "@types/node": "14.6.4",
     "@types/react": "16.9.49",
     "@types/react-dom": "16.9.8",
+    "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "5.1.5",
     "@typescript-eslint/eslint-plugin": "4.0.1",
     "@typescript-eslint/parser": "4.0.1",
