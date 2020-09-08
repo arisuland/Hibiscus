@@ -21,8 +21,8 @@
  */
 
 import { createStore } from 'redux';
-import StateLoader from './loaders/StateLoader';
-import reducer from './actions';
+import StateLoader from 'store/loaders/StateLoader';
+import reducer from 'store/actions';
 
 /**
  * Creates a new Redux store

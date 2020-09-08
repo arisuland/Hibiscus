@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import Title from '../../decorators/Title';
+import Title from 'decorators/Title';
 import React from 'react';
 
 @Title('Monori | Fallback Error')

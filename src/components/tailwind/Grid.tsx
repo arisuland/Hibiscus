@@ -20,38 +20,50 @@
  * SOFTWARE.
  */
 
-import { Container, Button } from 'components/tailwind';
-import { Title, connect } from 'decorators';
-import type { State } from 'store/types';
 import React from 'react';
 
-@connect<State>((state) => ({
-  isLoggedIn: state.isLoggedIn,
-  user: state.user
-}), {
-  add: () => {
-    return {
-      type: 'login'
-    };
-  }
-})
-@Title('test')
-class Home extends React.Component<State & { add(): void }> {
-  onClick(event: React.MouseEvent<HTMLButtonElement, React.MouseEvent>) {
-    console.log('clicked owo');
-    event.preventDefault();
+const Sizes = ['sm', 'md', 'lg', 'xl'];
 
-    console.log(this.props); // console-log it
-    this.props.add();
-  }
+interface GridProperties {
+  /**
+   * The grid size to properly add columns to it
+   */
+  gridSize: number;
 
+  /**
+   * The children for this [GridComponent]
+   */
+  children: React.ReactNode;
+
+  /**
+   * The size to use
+   * 
+   * ## Types
+   * - `sm` (640px; compatible with `tailwind.config.js`)
+   * - `md` (768px; compatible with `tailwind.config.js`)
+   * - `lg` (1024px; compatible with `tailwind.config.js`)
+   * - `xl` (1280px; compatible with `tailwind.config.js`)
+   */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+class GridComponent extends React.Component<GridProperties> {
   render() {
-    return <Container>
-      <h1 className='text-black'>Create new state</h1>
-      <p className='text-blue-300'>Current User: {this.props.user ? `@${this.props.user.username}` : 'unknown'}</p>
-      <Button content='Create!' onClick={(event) => this.onClick(event as any)}></Button>
-    </Container>;
+    if (this.props.size && !Sizes.includes(this.props.size)) throw new TypeError(`Expected ${Sizes.join(', ')} but received "${this.props.size}"`);
+    
+    const gridSize = this.props.gridSize || 3;
+    const getNamingScheme = (type: string) => {
+      let name = '';
+      if (this.props.size) name += `${this.props.size}:`;
+
+      name += type;
+      return name;
+    };
+
+    return <div className={`grid ${getNamingScheme(`grid-cols-${gridSize}`)}`}>
+      {this.props.children}
+    </div>;
   }
 }
 
-export default React.memo(Home);
+export default React.memo(GridComponent);

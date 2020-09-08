@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { ActionTypes, State } from './types';
+import { ActionTypes, State } from 'store/types';
 import type { Action } from 'redux';
 import { HttpClient } from '@augu/orchid';
 

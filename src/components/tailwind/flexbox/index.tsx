@@ -20,38 +20,4 @@
  * SOFTWARE.
  */
 
-import { Container, Button } from 'components/tailwind';
-import { Title, connect } from 'decorators';
-import type { State } from 'store/types';
-import React from 'react';
-
-@connect<State>((state) => ({
-  isLoggedIn: state.isLoggedIn,
-  user: state.user
-}), {
-  add: () => {
-    return {
-      type: 'login'
-    };
-  }
-})
-@Title('test')
-class Home extends React.Component<State & { add(): void }> {
-  onClick(event: React.MouseEvent<HTMLButtonElement, React.MouseEvent>) {
-    console.log('clicked owo');
-    event.preventDefault();
-
-    console.log(this.props); // console-log it
-    this.props.add();
-  }
-
-  render() {
-    return <Container>
-      <h1 className='text-black'>Create new state</h1>
-      <p className='text-blue-300'>Current User: {this.props.user ? `@${this.props.user.username}` : 'unknown'}</p>
-      <Button content='Create!' onClick={(event) => this.onClick(event as any)}></Button>
-    </Container>;
-  }
-}
-
-export default React.memo(Home);
+export { default as FlexJustify } from './Justify';

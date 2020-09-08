@@ -21,5 +21,7 @@
  */
 
 export { default as Container } from './Container';
+export { default as Grid } from './Grid';
+export * from './flexbox';
 export * from './button';
 export * from './forms';

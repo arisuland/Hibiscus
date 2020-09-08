@@ -49,7 +49,7 @@ class FormPromptComponent extends React.Component<FormPromptProps> {
   /**
    * Creates a reference for creating a prompt
    */
-  private ref: React.RefObject<HTMLFormElement>;
+  public ref: React.RefObject<HTMLFormElement>;
 
   /**
    * Makes a new [FormPromptComponent]
