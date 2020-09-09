@@ -46,15 +46,17 @@ class AccountDropdownComponent extends React.Component<AccountDropdownProps, Acc
   }
 
   render() {
+    // TODO: find a way to react (haha get it? >:3) when a user
+    // unclicks this dropdown (this will get annoying lol)
     return <div className='relative'>
       <button onClick={this.open.bind(this)} className='relative z-10 block h-8 w-8 rounded-full overflow-hidden border-2 border-purple-700 focus:outline-none focus:border-white'>
         <img className='h-full w-full object-cover' src={this.props.user.avatar} alt='cutie'></img>
       </button>
-      {this.state.isOpen ? <div className='absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl'>
-        <Link to='/users/@me/settings' className='block px-4 py-2 text-gray-800 hover:bg-indigo-500'>Settings</Link>
-        <Link to='/users/@me/organisations' className='block px-4 py-2 text-gray-800 hover:bg-indigo-500'>Organisations</Link>
-        <Link to='/users/@me/projects' className='block px-4 py-2 text-gray-800 hover:bg-indigo-500'>Projects</Link>
-        {this.props.user.admin ? <Link to='/admin' className='block px-4 py-2 text-gray-800 hover:bg-indigo-500'>Administration Panel</Link> : null}
+      {this.state.isOpen ? <div className='absolute right-0 mt-2 py-2 w-48 rounded-lg shadow-xl bg-gray-900'>
+        <Link to='/users/@me/settings' className='block px-4 py-2 text-white hover:bg-gray-600'>Settings</Link>
+        <Link to='/users/@me/organisations' className='block px-4 py-2 text-white hover:bg-gray-600'>Organisations</Link>
+        <Link to='/users/@me/projects' className='block px-4 py-2 text-white hover:bg-gray-600'>Projects</Link>
+        {this.props.user.admin ? <Link to='/admin' className='block px-4 py-2 text-white hover:bg-gray-600'>Administration Panel</Link> : null}
       </div> : null}
     </div>;
   }
