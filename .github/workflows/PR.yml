@@ -30,10 +30,10 @@ jobs:
       - name: Installs global dependencies
         run: npm i -g eslint postcss-cli concurrently react-scripts
       - name: Installs local dependencies
-        run: npm i
-      - name: Runs audits (if npm i failed)
+        run: npm i && npm audit fix
         if: ${{ failure() }}
-        run: npm audit fix
+      - name: Installs local dependencies
+        run: npm i
       - name: Lints the repository
         run: eslint src --ext .ts,.tsx --fix --ignore-path .gitignore
       - name: Runs End to End testing
