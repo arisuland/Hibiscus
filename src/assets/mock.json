@@ -59,7 +59,7 @@
   "projects": [
     {
       "translations": {
-        "en_US": "/tmp/translations/:org/:project/en_US.json"
+        "en_US": "/opt/Monori/translations/:org/:project/translations/en_US.json"
       },
       "completed": {
         "en_US": 100

@@ -21,7 +21,6 @@
  */
 
 import type { State, User } from 'store/types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AccountDropdown from 'components/base/AccountDropdown';
 import { connect } from 'decorators';
 import { Link } from 'react-router-dom';
@@ -62,11 +61,11 @@ class NavbarComponent extends React.Component<NavbarProps, NavbarState> {
             type='button' 
             className='block text-white hover:white focus:text-white focus:outline-none'
           >
-            <FontAwesomeIcon icon='bars' className='h-6 w-6 fill-current' />
+            <i className='fas fa-bars' />
           </button>
         </div>
       </div>
-      <nav className={`${this.state.isOpen ? 'block' : 'hidden'} px-2 pt-2 pb-4 sm:flex sm:p-0`}>
+      <nav className={'block px-2 pt-2 pb-4 sm:flex sm:p-0'}>
         {this.props.isLoggedIn ? <AccountDropdown user={this.props.user!} className='ml-6' /> : <Link to='/login' className='mt-1 block px-2 py-1 text-white font-semibold rounded hover:bg-gray-700 sm:mt-0 sm:ml-2'></Link>}
       </nav>
     </header>;

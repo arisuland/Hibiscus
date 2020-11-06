@@ -36,12 +36,12 @@ export default class StateLoader {
     if (!this.state) {
       try {
         const cache = localStorage.getItem('monori.state');
-        const state = cache === null ? this._init() : JSON.parse<State>(cache);
+        const state = cache === null ? this.defaultState : JSON.parse<State>(cache);
 
         this.state = state;
         return state;
       } catch {
-        return this._init();
+        return this.defaultState;
       }
     } else {
       return this.state;
@@ -58,7 +58,7 @@ export default class StateLoader {
   /**
    * Initialises a new instance of `this.state`
    */
-  private _init(): State {
+  private get defaultState(): State {
     return {
       isLoggedIn: false,
       user: null
