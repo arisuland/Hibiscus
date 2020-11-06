@@ -34,4 +34,4 @@ jobs:
       - name: Lints the repository
         run: eslint src --ext .ts,.tsx --fix --ignore-path .gitignore
       - name: Runs End to End testing
-        run: postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose && rm -fr src/styles/**/*.css.map && ./node_modules/.bin/cypress run
+        run: yarn postcss src/styles/**/*.scss --dir src/styles/ --ext css --verbose && rm -fr src/styles/**/*.css.map && ./node_modules/.bin/cypress run
