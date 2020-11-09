@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "4.7.0",
     "autoprefixer": "10.0.1",
     "concurrently": "5.3.0",
-    "cypress": "5.5.0",
+    "cypress": "5.6.0",
     "eslint": "7.13.0",
     "eslint-plugin-react": "7.21.5",
     "postcss": "8.1.6",
