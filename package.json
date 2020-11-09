@@ -16,7 +16,7 @@
     "e2e": "yarn concurrently \"yarn start\" \"cypress run\" --success first --kill-others"
   },
   "dependencies": {
-    "@augu/orchid": "1.8.0",
+    "@augu/orchid": "1.8.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-redux": "7.2.2",
