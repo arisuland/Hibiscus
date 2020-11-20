@@ -29,7 +29,7 @@
     "@augu/eslint-config": "1.8.3",
     "@csstools/postcss-sass": "4.0.0",
     "@types/node": "14.14.9",
-    "@types/react": "16.14.0",
+    "@types/react": "17.0.0",
     "@types/react-dom": "16.9.9",
     "@types/react-redux": "7.1.11",
     "@types/react-router-dom": "5.1.6",
