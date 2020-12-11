@@ -1,10 +1,5 @@
-src/styles/*.css.map
-cypress/screenshots/
-src/styles/*.css
-cypress/videos/
 node_modules/
-build/
+.next/
 
-package-*.json
 *.lock
 *.log
