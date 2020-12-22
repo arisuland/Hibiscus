@@ -1,6 +1,3 @@
 {
-  "extends": "@augu/eslint-config/react-ts.js",
-  "rules": {
-    "react/jsx-closing-tag-location": "off"
-  }
+  "extends": "@augu/eslint-config/ts.js"
 }

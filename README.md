@@ -3,8 +3,8 @@
 
 ## Installation
 ### Requirements
-- Node.js v10+
 - [Arisu](https://github.com/arisuland/Arisu) running
+- Node.js v10+
 - Docker (optional)
 
 ### Process (Locally)

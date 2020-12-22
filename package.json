@@ -6,27 +6,41 @@
   "author": "Chris \"August\" Hernandez <august@augu.dev>",
   "license": "MIT",
   "repository": "https://github.com/arisuland/Hibiscus",
+  "homepage": "https://arisu.land",
+  "bugs": "https://github.com/arisuland/Hibiscus/issues",
+  "maintainers": [
+    {
+      "email": "team@arisu.land",
+      "name": "Arisu Team",
+      "url": "https://arisu.land"
+    }
+  ],
   "scripts": {
-    "lint": "eslint pages --ext .ts,.tsx --fix",
-    "dev": "yarn lint && yarn next dev"
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "lint": "node scripts/lint.js",
+    "dev": "node scripts/dev.js"
   },
   "dependencies": {
+    "@augu/immutable": "0.6.0",
     "@augu/orchid": "1.8.1",
-    "next": "10.0.3",
+    "leeks.js": "0.0.9",
+    "path-to-regexp": "6.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "tailwindcss": "2.0.1"
+    "tailwindcss": "2.0.2"
   },
   "devDependencies": {
     "@augu/eslint-config": "1.9.0",
-    "@types/node": "14.14.12",
+    "@csstools/postcss-sass": "4.0.0",
+    "@types/node": "14.14.14",
     "@types/react": "17.0.0",
-    "@typescript-eslint/eslint-plugin": "4.9.1",
-    "@typescript-eslint/parser": "4.9.1",
+    "@types/react-dom": "17.0.0",
+    "@typescript-eslint/eslint-plugin": "4.11.0",
+    "@typescript-eslint/parser": "4.11.0",
     "autoprefixer": "10.1.0",
-    "eslint": "7.15.0",
+    "eslint": "7.16.0",
     "postcss": "8.2.1",
-    "sass": "1.30.0",
-    "typescript": "4.1.2"
+    "typescript": "4.1.3"
   }
 }
