@@ -20,8 +20,30 @@
  * SOFTWARE.
  */
 
-async function main() {
-  // noop
+const { exec } = require('child_process');
+const { join } = require('path');
+const Logger = require('./util/Logger');
+
+const logger = new Logger('TypeScript');
+function main() {
+  logger.info('spinning up child process...');
+
+  const proc = exec('tsc', { cwd: join(__dirname, '..') });
+  let success = true;
+
+  logger.info(`spawned as pid ${proc.pid}`);
+  proc.stdout.on('data', chunk => logger.info(chunk));
+  proc.stderr.on('data', chunk => logger.error(chunk));
+
+  proc.on('error', error => {
+    logger.error('Unable to process TypeScript build', error);
+    success = false;
+  });
+
+  proc.once('exit', (code, signal) => {
+    success = code === 0;
+    logger.info(`\`tsc\` has closed with code ${code}${signal ? ` with signal "${signal}"` : ''}, success: ${success ? 'yes' : 'no'}`);
+  });
 }
 
 main();
