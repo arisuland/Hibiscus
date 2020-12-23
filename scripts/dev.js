@@ -20,22 +20,21 @@
  * SOFTWARE.
  */
 
-const { existsSync, promises: fs, watch, readFileSync } = require('fs');
-const { createHmac, createHash } = require('crypto');
+const { existsSync, promises: fs, watch, watchFile } = require('fs');
+const { join, resolve } = require('path');
 const { exec } = require('child_process');
-const { join } = require('path');
 const Logger = require('./util/Logger');
 
 const logger = new Logger('Dev Server');
-let watcher;
-const timeouts = {};
-const prevHash = {};
+const watchers = {};
 let printed = false;
+let locked = false;
 
-const config = readFileSync(join(__dirname, '..', 'arisu.config.js'), { encoding: 'utf8' });
+const config = require(join(__dirname, '..', 'arisu.config.js'));
 
 async function main() {
   logger.info('spawning development server...');
+  logger.info('arisu.config.js file ->', config);
 
   if (!existsSync(join(__dirname, '..', 'build'))) {
     logger.error('unable to spawn dev server without stuff being compiled. (hint: run `npm run build` before running this)');
@@ -45,48 +44,59 @@ async function main() {
   const files = await readdir(join(__dirname, '..', 'build'));
   let proc;
 
-  watcher = watch(
-    join(__dirname, '..', 'build'),
-    { persistent: true, recursive: true },
-    (event, filename) => onFileChange(event, join(__dirname, '..', 'build', filename), () => {
-      // this is called when we edited it
-      logger.info(`File '${filename}' was edited, re-spawning server...`);
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const w = watch(file, { persistent: true, interval: 1000 }, (e, i) => onFileChange(e, i, () => {
+      const stats = watchers[file];
+      const nStats = {
+        changed: (stats.changed || 0) + 1,
+        watcher: stats.watcher
+      };
 
-      proc.kill();
+      watchers[file] = nStats;
+      logger.warn(`received ${nStats.changed.toLocaleString()} file changes on file "${file}"`);
+
+      proc.kill('SIGINT');
       proc = null;
       proc = spawn();
-    }));
+    })).unref();
+
+    w.on('error', error =>
+      logger.error('Unable to receive file change event', error)
+    );
+
+    watchers[file] = {
+      changed: 0,
+      watcher: w
+    };
+  }
 
   proc = spawn();
+
+  logger.info('displaying stats', {
+    watchers: `${Object.keys(watchers).length.toLocaleString()} available`,
+    platform: process.platform,
+    pid: proc.pid
+  });
 
   process.on('SIGINT', () => {
     logger.warn('received `SIGINT` event, assuming to kill process');
 
-    if (watcher) watcher.close();
     proc.kill('SIGINT');
     process.exit(0);
   });
 }
 
 async function onFileChange(event, filename, callback) {
-  console.log(`event ${event}? (filename = ${filename})`);
-
   if (event === 'change' && filename) {
-    if (timeouts[filename]) return logger.warn('deadlock bitches');
-    timeouts[filename] = setTimeout(() => {
-      delete timeouts[filename];
-    }, 250);
+    if (locked) return; // this can do a lot of funky stuff
 
-    logger.info(`filename '${filename}' has been changed`);
-    const contents = await fs.readFile(filename);
-    const hash = createHash('md5').update(contents).digest('hex');
+    locked = true;
+    setTimeout(() => {
+      locked = false;
+    }, 150);
 
-    if (prevHash[filename] === undefined || prevHash[filename] !== hash) {
-      prevHash[filename] = hash;
-      return callback();
-    } else {
-      logger.warn('same hash????');
-    }
+    callback();
   }
 }
 
@@ -109,7 +119,6 @@ function spawn() {
   proc.once('exit', (code, signal) => {
     if (!printed) logger.warn(`ended development server with code ${code}${signal ? `, signal '${signal}'` : ''}`);
 
-    if (watcher) watcher.close();
     if (code !== null) process.exit(code);
   });
 
