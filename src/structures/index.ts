@@ -20,37 +20,8 @@
  * SOFTWARE.
  */
 
-import type { Request, Response } from './entity';
-import { createElement } from 'react';
-import DOMServer from 'react-dom/server';
-import { join } from 'path';
-
-/** Exported value of the properties for any component, this is meant to be extended */
-export interface Properties {
-  req: Request;
-  res: Response;
-}
-
-/**
- * Rendering engine for React
- * @param req The request to add to the props object
- * @param res The response to add to the props object
- * @param path The path to the component
- * @param props Any additional props, if any to add to the component
- */
-export default function render<Props extends object = {}>(req: Request, res: Response, path: string, props?: Props) {
-  if (!path.endsWith('.js')) path += '.js';
-
-  const filePath = join(process.cwd(), 'views', path);
-  let html = '<!DOCTYPE html>';
-  const component = require(filePath);
-
-  if (!component.default) throw new SyntaxError(`Component "${path}" didn't export a default port.`);
-  html += DOMServer.renderToStaticMarkup(createElement(component.default, {
-    req,
-    res,
-    ...(props || {})
-  }));
-
-  return html;
-}
+export * from './decorators/Route';
+export * from './Endpoint';
+export * from './Logger';
+export * from './entity';
+export * from './Server';

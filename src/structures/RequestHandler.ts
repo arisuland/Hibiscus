@@ -20,3 +20,36 @@
  * SOFTWARE.
  */
 
+import type { IncomingMessage, ServerResponse } from 'http';
+import { Request, Response } from './entity';
+import APIRequestHandler from './requests/APIRequestHandler';
+import EmiRequestHandler from './requests/EmiRequestHandler';
+import type { Server } from './Server';
+import { Logger } from './Logger';
+
+/** The request handler for handling incoming requests and helper utility for making requests to the API and Emi */
+export default class RequestHandler {
+  private server: Server;
+  private logger: Logger;
+
+  /** The API request handler */
+  public api: APIRequestHandler;
+
+  /** Request handler for [Emi](https://docs.arisu.land/Emi) */
+  public emi: EmiRequestHandler;
+
+  /**
+   * Creates a new [RequestHandler] instance
+   * @param server The server instance
+   */
+  constructor(server: Server) {
+    this.server = server;
+    this.logger = new Logger('RequestHandler');
+    this.api = new APIRequestHandler(server.config.get('instanceUrl'));
+    this.emi = new EmiRequestHandler(server.config.get('emi.instanceUrl'));
+  }
+
+  handle(req: IncomingMessage, res: ServerResponse) {
+    this.logger.info(`-> ${req.method?.toUpperCase()} ${req.url}`);
+  }
+}

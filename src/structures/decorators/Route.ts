@@ -27,7 +27,7 @@ type MaybePromise<T> = T | Promise<T>;
 const SYMBOL = Symbol('$routes');
 
 /** Represents a route */
-interface RouteDefinition {
+export interface RouteDefinition {
   /**
    * The runner method to run when we hit this specific endpoint
    * @param req The request
