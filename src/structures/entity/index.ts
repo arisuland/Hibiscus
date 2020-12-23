@@ -20,36 +20,5 @@
  * SOFTWARE.
  */
 
-import type { IncomingHttpHeaders, IncomingMessage } from 'http';
-import { parse, UrlWithParsedQuery } from 'url';
-import { match } from 'path-to-regexp';
-
-/** Represents a request that made a connection with Hibiscus */
-export class Request<P extends object = object, B = unknown> {
-  private _endpointPath: string;
-  public headers: IncomingHttpHeaders;
-  public method: string;
-  private core: IncomingMessage;
-  public body: B;
-  public url: UrlWithParsedQuery;
-
-  constructor(req: IncomingMessage, body: Buffer, path: string) {
-    this._endpointPath = path;
-    this.headers = req.headers;
-    this.method = req.method || 'GET';
-    this.body = JSON.parse(body.toString());
-    this.core = req;
-    this.url = parse(req.url!, true);
-  }
-
-  get query() {
-    return this.url.query;
-  }
-
-  get params() {
-    const matchFunc = match<P>(this._endpointPath);
-    const result = matchFunc(this.core.url || '/');
-
-    return result === false ? null : result.params;
-  }
-}
+export * from './Response';
+export * from './Request';

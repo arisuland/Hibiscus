@@ -21,8 +21,20 @@
  */
 
 import { HttpClient } from '@augu/orchid';
+const { version } = require('../../../package.json');
 
 /** Represents a [EmiRequestHandler], for making requests and handling ratelimits to [Emi](https://docs.arisu.land/Emi) */
 export default class EmiRequestHandler {
+  private http: HttpClient;
 
+  constructor(url: string) {
+    this.http = new HttpClient({
+      defaults: {
+        baseUrl: url,
+        headers: {
+          'User-Agent': `Hibiscus (https://github.com/arisuland/Hibiscus, v${version})`
+        }
+      }
+    });
+  }
 }

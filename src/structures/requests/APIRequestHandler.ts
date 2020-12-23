@@ -21,8 +21,20 @@
  */
 
 import { HttpClient } from '@augu/orchid';
+const { version } = require('../../../package.json');
 
 /** Represents a [APIRequestHandler], for making requests and handling ratelimits to [Arisu](https://arisu.land) */
 export default class APIRequestHandler {
+  private http: HttpClient;
 
+  constructor(url: string) {
+    this.http = new HttpClient({
+      defaults: {
+        baseUrl: url,
+        headers: {
+          'User-Agent': `Hibiscus (https://github.com/arisuland/Hibiscus, v${version})`
+        }
+      }
+    });
+  }
 }

@@ -45,8 +45,8 @@ export default class RequestHandler {
   constructor(server: Server) {
     this.server = server;
     this.logger = new Logger('RequestHandler');
-    this.api = new APIRequestHandler(server.config.get('instanceUrl'));
-    this.emi = new EmiRequestHandler(server.config.get('emi.instanceUrl'));
+    this.api = new APIRequestHandler(server.config.get<string>('instanceUrl')!);
+    this.emi = new EmiRequestHandler(server.config.get<string>('emi.instanceUrl')!);
   }
 
   handle(req: IncomingMessage, res: ServerResponse) {
