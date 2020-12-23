@@ -20,8 +20,73 @@
  * SOFTWARE.
  */
 
-async function main() {
-  // noop
+const { existsSync } = require('fs');
+const { exec } = require('child_process');
+const { join } = require('path');
+const Logger = require('./util/Logger');
+
+const config = require(join(__dirname, '..', 'arisu.config.js'));
+const logger = new Logger('Hibiscus');
+let printed = false;
+
+/**
+ * Runs Hibiscus with a specified port
+ * @param {number} port The port to use
+ * @param {boolean} restart If we should restart the server if the process exists
+ */
+async function main(port, restart) {
+  let proc;
+  logger.info('Starting Hibiscus...');
+
+  if (!existsSync(join(__dirname, '..', 'build'))) {
+    logger.error('Missing \'build\' directory, did you compile it? (Hint: Use `npm run build` to build Hibiscus)');
+    process.exit(1);
+  }
+
+  logger.info(`Booting up server using port ${port}, restart: ${restart ? 'yes' : 'no'}`);
+  proc = spawn(restart);
+
+  process.on('SIGINT', () => {
+    logger.error('Received `SIGINT` signal, killing server');
+
+    proc?.kill('SIGINT');
+    proc = null;
+    process.exit(0);
+  });
 }
 
-main();
+function spawn(restart) {
+  const proc = exec('node index.js', {
+    cwd: join(__dirname, '..', 'build'),
+    env: {
+      INSTANCE_URL: config.instanceUrl || 'api.arisu.land',
+      NODE_ENV: 'production'
+    }
+  });
+
+  if (!printed) {
+    printed = true;
+    logger.info(`Spawned as process '${proc.pid}'`);
+  }
+
+  proc.stdout.on('data', chunk => console.log(chunk));
+  proc.stderr.on('data', chunk => console.error(chunk));
+  proc.once('exit', (code, signal) => {
+    logger.warn(`ended server with code ${code}${signal ? `, signal '${signal}'` : ''}`);
+
+    if (restart) {
+      logger.info('respawning server');
+      spawn(restart);
+    } else {
+      logger.error('keeping server dead');
+    }
+  });
+
+  return proc;
+}
+
+const args = process.argv.slice(2);
+const port = args.length > 0 ? Number(args[0]) : 3621;
+const restart = args.length > 1 ? args[1] === '-r' || args[1] === '--restart' : true;
+
+main(port, restart);

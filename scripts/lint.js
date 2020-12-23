@@ -20,8 +20,53 @@
  * SOFTWARE.
  */
 
+const { ESLint } = require('eslint');
+const { join } = require('path');
+const Logger = require('./util/Logger');
+
+const logger = new Logger('ESLint');
 async function main() {
-  // noop
+  logger.info('linting files...');
+
+  const linter = new ESLint({
+    overrideConfigFile: join(__dirname, '..', '.eslintrc.json'),
+    extensions: ['js', 'ts'],
+    ignorePath: join(__dirname, '..', '.eslintignore')
+  });
+
+  const results = await linter.lintFiles(['src', 'scripts']);
+  for (let i = 0; i < results.length; i++) {
+    const result = results[i];
+    if (result.errorCount > 0) {
+      const messages = [];
+
+      for (let j = 0; j < result.messages.length; j++) {
+        const m = result.messages[j];
+        let message = `X  ${m.ruleId}: ${m.message} (${result.filePath}:${m.line}:${m.column})`;
+
+        messages.push(message);
+      }
+
+      logger.error('', messages);
+      break; // continue
+    }
+
+    if (result.warningCount > 0) {
+      const messages = [];
+      for (let j = 0; j < result.messages.length; j++) {
+        const m = result.messages[j];
+        let message = `?  ${m.ruleId}: ${m.message} (${result.filePath}:${m.line}:${m.column})`;
+
+        messages.push(message);
+      }
+
+      logger.warn('', messages);
+      break; // continue
+    }
+
+    if (i === results.length - 1)
+      logger.info('No inconsistent code-style anywhere.');
+  }
 }
 
 main();

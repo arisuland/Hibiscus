@@ -20,9 +20,10 @@
  * SOFTWARE.
  */
 
-const { existsSync, promises: fs, watch, watchFile } = require('fs');
-const { join, resolve } = require('path');
+const { existsSync, watch } = require('fs');
+const { join } = require('path');
 const { exec } = require('child_process');
+const readdir = require('./util/readdir');
 const Logger = require('./util/Logger');
 
 const logger = new Logger('Dev Server');
@@ -34,7 +35,6 @@ const config = require(join(__dirname, '..', 'arisu.config.js'));
 
 async function main() {
   logger.info('spawning development server...');
-  logger.info('arisu.config.js file ->', config);
 
   if (!existsSync(join(__dirname, '..', 'build'))) {
     logger.error('unable to spawn dev server without stuff being compiled. (hint: run `npm run build` before running this)');
@@ -101,10 +101,10 @@ async function onFileChange(event, filename, callback) {
 }
 
 function spawn() {
-  const proc = exec('node index.js --dev', {
+  const proc = exec('node app.js', {
     cwd: join(__dirname, '..', 'build'),
     env: {
-      INSTANCE_URL: config.instanceUrl || 'https://arisu.land',
+      INSTANCE_URL: config.instanceUrl || 'api.arisu.land',
       NODE_ENV: 'development'
     }
   });
@@ -124,24 +124,5 @@ function spawn() {
 
   return proc;
 }
-
-const readdir = async (path) => {
-  let results = [];
-  const files = await fs.readdir(path);
-
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const stats = await fs.lstat(join(path, file));
-
-    if (stats.isDirectory()) {
-      const r = await readdir(join(path, file));
-      results = results.concat(r);
-    } else {
-      results.push(join(path, file));
-    }
-  }
-
-  return results;
-};
 
 main();
