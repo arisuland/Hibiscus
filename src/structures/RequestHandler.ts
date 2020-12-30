@@ -20,8 +20,7 @@
  * SOFTWARE.
  */
 
-import type { IncomingMessage, ServerResponse } from 'http';
-import { Request, Response } from './entity';
+import type { Request, Response } from 'express';
 import APIRequestHandler from './requests/APIRequestHandler';
 import EmiRequestHandler from './requests/EmiRequestHandler';
 import type { Server } from './Server';
@@ -49,7 +48,7 @@ export default class RequestHandler {
     this.emi = new EmiRequestHandler(server.config.get<string>('emi.instanceUrl')!);
   }
 
-  handle(req: IncomingMessage, res: ServerResponse) {
-    this.logger.info(`-> ${req.method?.toUpperCase()} ${req.url}`);
+  handle(req: Request, res: Response) {
+    this.logger.info(`-> ${req.method.toUpperCase()} ${req.url}`);
   }
 }

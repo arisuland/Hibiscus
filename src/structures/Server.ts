@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 
+import express, { Application } from 'express';
 import Config, { SSLConfig } from './Config';
 import MiddlewareManager from './managers/MiddlewareManager';
 import EndpointManager from './managers/EndpointManager';
@@ -28,7 +29,6 @@ import SassManager from './managers/SassManager';
 import { Logger } from './Logger';
 import https from 'https';
 import http from 'http';
-import net from 'net';
 import os from 'os';
 
 export class Server {
@@ -39,6 +39,7 @@ export class Server {
   private logger: Logger;
   public config: Config;
   public sass: SassManager;
+  public app: Application;
 
   constructor() {
     this.middleware = new MiddlewareManager(this);
@@ -47,6 +48,7 @@ export class Server {
     this.logger     = new Logger('Server');
     this.config     = new Config();
     this.sass       = new SassManager();
+    this.app        = express();
   }
 
   async init() {
@@ -66,7 +68,8 @@ export class Server {
         cert: ssl.cert,
         key: ssl.key,
         ca: ssl.ca
-      }, (req, res) => this.requests.handle(req, res)) : http.createServer((req, res) => this.requests.handle(req, res));
+      }, this.app)
+      : http.createServer(this.app);
 
     this._server = server;
 
@@ -75,14 +78,29 @@ export class Server {
       process.exit(1);
     });
 
+    const prefix = ssl !== undefined ? 'https' : 'http';
     this._server.once('listening', () => {
-      const networks = this.getNetworks();
-      this.logger.info('Hibiscus is listening at the following urls:', networks.map(network =>
-        `- ${ssl !== undefined ? 'https' : 'http'}://${network}:${this.config.get<number>('port')}`)
-      );
+      const address = this._server.address();
+      const networks: string[] = [];
+
+      if (typeof address === 'string') {
+        networks.push(`- Sock "${address}"`);
+      } else {
+        if (address !== null) {
+          if (address.address === '::') networks.push(`- Local: ${prefix}://localhost:${this.config.get<number>('port')}`);
+
+          networks.push(`- Network: ${prefix}://${address.address}:${this.config.get<number>('port')}`);
+        }
+      }
+
+      const additional = networks.concat(this.getNetworks().map(n =>
+        `- Network: ${prefix}://${n}:${this.config.get<number>('port')}`
+      ));
+
+      this.logger.info('Hibiscus is listening at the following urls:', additional);
     });
 
-    await this._runServer();
+    this._server.listen(this.config.get<number>('port')!);
   }
 
   private getNetworks() {
@@ -97,69 +115,5 @@ export class Server {
     }
 
     return networks;
-  }
-
-  private getAvailablePort(port: number) {
-    const getRandomPort = () => Math.floor(Math.random() * (65535 - 1024) + 1024);
-    let chances = 0;
-
-    function isAvailable(port?: number) {
-      if (!port) port = getRandomPort();
-      if (port < 1024 || port > 65535) port = getRandomPort();
-
-      // It shouldn't reach this but it's better then sorry?
-      if (chances > 5) return Promise.reject(new Error('Chances exceeded to 5, not trying again.'));
-      return new Promise<number>((resolve, reject) => {
-        chances++;
-
-        const timeout = setTimeout(() => reject(new Error(`Port '${port}' is taken, but not resolving`)), 15000).unref();
-        const socket = net.createConnection({ port: port! }, () => {
-          clearTimeout(timeout);
-          socket.end();
-
-          reject(new Error(`Port '${port}' is taken, try again.`));
-        });
-
-        socket.once('error', (error) => {
-          if (error.message.includes('connect ECONNREFUSED')) return resolve(port!);
-
-          clearTimeout(timeout);
-          return reject(error);
-        });
-      });
-    }
-
-    const current = port;
-    const onSuccess = (port: number) => {
-      if (port !== current) {
-        this.config.set('port', port);
-        this.logger.warn(`Port '${current}' is available, now using it (provided: ${current})`);
-
-        return port;
-      } else {
-        return current;
-      }
-    };
-
-    const onError = (error: any) => {
-      if (error.message.includes('taken')) {
-        this.logger.warn(`Port '${current}' was taken, running again...`);
-        return isAvailable();
-      }
-
-      this.logger.error('Unable to find available port', error);
-      return getRandomPort(); // use a random port
-    };
-
-    return isAvailable(port)
-      .then(onSuccess)
-      .catch(onError);
-  }
-
-  private async _runServer() {
-    this.logger.info('Now running server...');
-
-    const port = await this.getAvailablePort(this.config.get<number>('port')!);
-    this._server.listen(port);
   }
 }

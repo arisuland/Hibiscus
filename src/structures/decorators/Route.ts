@@ -20,8 +20,7 @@
  * SOFTWARE.
  */
 
-import type { Response } from '../entity/Response';
-import type { Request } from '../entity/Request';
+import type { Response, Request } from 'express';
 
 type MaybePromise<T> = T | Promise<T>;
 const SYMBOL = Symbol('$routes');
