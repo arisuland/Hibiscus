@@ -25,7 +25,7 @@
     "@augu/immutable": "0.6.1",
     "@augu/orchid": "1.8.1",
     "express": "4.17.1",
-    "js-yaml": "3.14.1",
+    "js-yaml": "4.0.0",
     "leeks.js": "0.0.9",
     "path-to-regexp": "6.2.0",
     "react": "17.0.1",
