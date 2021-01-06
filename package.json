@@ -36,7 +36,7 @@
     "@augu/eslint-config": "1.9.0",
     "@csstools/postcss-sass": "4.0.0",
     "@types/express": "4.17.9",
-    "@types/js-yaml": "3.12.5",
+    "@types/js-yaml": "4.0.0",
     "@types/node": "14.14.20",
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
