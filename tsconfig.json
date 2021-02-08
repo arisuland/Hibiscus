@@ -2,21 +2,50 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-    "lib": ["ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020", "ESNext"],
+    "lib": [
+      "ES2015",
+      "ES2016",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020",
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "declaration": false,
-    "outDir": "./build",
-    "rootDir": "./src",
     "strict": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "types": ["node"],
-    "typeRoots": ["./src/@types"],
+    "types": [
+      "node"
+    ],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "jsx": "react"
+    "jsx": "preserve",
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/": [
+        "src/*"
+      ]
+    },
+    "allowJs": true,
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "tests/**/*"]
+  "include": [
+    //"**/*.ts",
+    "next-env.d.ts",
+    //"**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
