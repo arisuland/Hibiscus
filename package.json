@@ -28,7 +28,7 @@
   "dependencies": {
     "autoprefixer": "10.0.4",
     "next": "10.0.6",
-    "postcss": "8.1.10",
+    "postcss": "8.2.6",
     "postcss-import": "14.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
