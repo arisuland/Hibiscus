@@ -1,3 +1,6 @@
+# WARNING
+This repository has been merged with the [main repository](https://github.com/arisuland/Arisu).
+
 # arisu.land
 > ☔ **Frontend application for Arisu, made with React and TailwindCSS**
 
